@@ -1,5 +1,8 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 include 'connection.php';
 
 $error = "";
@@ -98,3 +101,110 @@ if (isset($_POST['submit'])) {
 }
 
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="form-card">
+
+        <div class="form-header">
+            <h1>Hotel Reservation System</h1>
+            <h2>Create an Account</h2>
+        </div>
+
+        <?php if (!empty($error)) : ?>
+            <div class="error">
+                <?php echo $error; ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!empty($success)) : ?>
+            <div class="success">
+                <?php echo $success; ?>
+            </div>
+        <?php endif; ?>
+
+        <form action="" method="POST">
+
+            <div class="form-group">
+                <label for="fname">First Name</label>
+                <input
+                    type="text" id="fname" name="fname" placeholder="First Name"
+                    value="<?php echo isset($_POST['fname']) ? htmlspecialchars($_POST['fname']) : ''; ?>"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="mname">Middle Name</label>
+                <input type="text" id="mname" name="mname" placeholder="Middle Name"
+                    value="<?php echo isset($_POST['mname']) ? htmlspecialchars($_POST['mname']) : ''; ?>">
+            </div>
+
+            <div class="form-group">
+                <label for="lname">Last Name</label>
+                <input type="text" id="lname" name="lname" placeholder="Last Name"
+                    value="<?php echo isset($_POST['lname']) ? htmlspecialchars($_POST['lname']) : ''; ?>"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="bday">Birthday</label>
+                <input type="date" id="bday" name="bday"
+                    value="<?php echo isset($_POST['bday']) ? $_POST['bday'] : ''; ?>"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Email"
+                    value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="09XXXXXXXXX"pattern="[0-9]{11}"
+                    value="<?php echo isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : ''; ?>"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Password" minlength="8"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password</label>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password"minlength="8"
+                    required>
+            </div>
+
+            <button type="submit" name="submit" class="btn-primary">
+                Register
+            </button>
+
+        </form>
+
+        <p class="form-footer">
+            Already have an account?
+            <a href="login.php">Login here</a>
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>
