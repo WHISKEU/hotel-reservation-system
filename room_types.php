@@ -10,6 +10,7 @@ $type_name = "";
 $description = "";
 $price = "";
 
+// Handle Add Room Type
 if (isset($_POST['add_room_type'])) {
 
     $type_name = trim($_POST['type_name']);
@@ -93,9 +94,134 @@ $room_types = mysqli_query(
     "SELECT * FROM room_types ORDER BY room_type_id ASC"
 );
 
+// Handle Edit
+
+if (isset($_GET['edit'])) {
+
+    $edit_id = $_GET['edit'];
+
+    $stmt = mysqli_prepare(
+        $conn,
+        "SELECT * FROM room_types WHERE room_type_id = ?"
+    );
+
+    mysqli_stmt_bind_param($stmt, "i", $edit_id);
+
+    mysqli_stmt_execute($stmt);
+
+    $result = mysqli_stmt_get_result($stmt);
+
+    if ($row = mysqli_fetch_assoc($result)) {
+
+        $edit = true;
+        $room_type_id = $row['room_type_id'];
+
+        $type_name = $row['type_name'];
+        $description = $row['description'];
+        $price = $row['price'];
+
+    } else {
+
+        header("Location: room_types.php");
+        exit();
+
+    }
+
+    mysqli_stmt_close($stmt);
+}
+
+// UPDATE
+
+if (isset($_POST['update_room_type'])) {
+
+    $room_type_id = $_POST['room_type_id'];
+    $type_name = trim($_POST['type_name']);
+    $description = trim($_POST['description']);
+    $price = trim($_POST['price']);
+
+    // Validation
+    if (empty($type_name)) {
+
+        $error = "Room type is required.";
+
+    } elseif (empty($description)) {
+
+        $error = "Description is required.";
+
+    } elseif (empty($price)) {
+
+        $error = "Price is required.";
+
+    } elseif (!is_numeric($price) || $price <= 0) {
+
+        $error = "Price must be greater than zero.";
+
+    } else {
+
+        $stmt = mysqli_prepare(
+            $conn,
+            "UPDATE room_types
+             SET type_name = ?, description = ?, price = ?
+             WHERE room_type_id = ?"
+        );
+
+        mysqli_stmt_bind_param(
+            $stmt,
+            "ssdi",
+            $type_name,
+            $description,
+            $price,
+            $room_type_id
+        );
+
+        if (mysqli_stmt_execute($stmt)) {
+
+            header("Location: room_types.php");
+            exit();
+
+        } else {
+
+            $error = "Failed to update room type.";
+
+        }
+
+        mysqli_stmt_close($stmt);
+
+    }
+
+}
+
+// Handle Delete
+if (isset($_GET['delete'])) {
+
+    $delete_id = $_GET['delete'];
+
+    $stmt = mysqli_prepare(
+        $conn,
+        "DELETE FROM room_types WHERE room_type_id = ?"
+    );
+
+    mysqli_stmt_bind_param($stmt, "i", $delete_id);
+
+    if (mysqli_stmt_execute($stmt)) {
+
+        header("Location: room_types.php");
+        exit();
+
+    } else {
+
+        $error = "Failed to delete room type.";
+
+    }
+
+    mysqli_stmt_close($stmt);
+
+}
+
 include '../includes/admin_header.php';
 include '../includes/admin_sidebar.php';
 ?>
+
 
 
 <!-- HTML content for the room types page -->
@@ -122,6 +248,13 @@ include '../includes/admin_sidebar.php';
     <?php endif; ?>
 
     <form method="POST">
+        <?php if ($edit): ?>
+            <input
+                type="hidden"
+                name="room_type_id"
+                value="<?php echo $room_type_id; ?>">
+        <?php endif; ?>
+
 
         <div class="form-group">
 
@@ -151,13 +284,23 @@ include '../includes/admin_sidebar.php';
 
         </div>
 
-        <button
-            type="submit"
-            name="add_room_type">
+        <?php if ($edit): ?>
 
-            Add Room Type
+            <button type="submit" name="update_room_type">
+                Update Room Type
+            </button>
 
-        </button>
+            <a href="room_types.php" class="btn-cancel">
+                Cancel
+            </a>
+
+        <?php else: ?>
+
+            <button type="submit" name="add_room_type">
+                Add Room Type
+            </button>
+
+        <?php endif; ?>
 
     </form>
 
