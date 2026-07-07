@@ -50,7 +50,7 @@ CREATE TABLE `reservations` (
   `check_out` date NOT NULL,
   `total_price` decimal(10,2) NOT NULL,
   `reservation_status` enum('Pending','Confirmed','Cancelled','Completed') NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -62,13 +62,9 @@ CREATE TABLE `reservations` (
 CREATE TABLE `rooms` (
   `room_id` int(11) NOT NULL,
   `room_number` varchar(10) NOT NULL,
-  `room_type` varchar(50) NOT NULL,
-  `price` decimal(10,2) NOT NULL,
-  `capacity` int(11) NOT NULL,
-  `description` text NOT NULL,
-  `status` enum('Available','Occupied','Maintenance') NOT NULL
+  `room_type_id` int(11) NOT NULL,
+  `status` enum('Available','Occupied','Maintenance') NOT NULL DEFAULT 'Available'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 -- --------------------------------------------------------
 
 --
@@ -79,7 +75,8 @@ CREATE TABLE `room_types` (
   `room_type_id` int(11) NOT NULL,
   `type_name` varchar(50) NOT NULL,
   `description` text NOT NULL,
-  `price` decimal(10,2) NOT NULL
+  `price` decimal(10,2) NOT NULL,
+  `capacity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -124,13 +121,16 @@ ALTER TABLE `reservations`
 -- Indexes for table `rooms`
 --
 ALTER TABLE `rooms`
-  ADD PRIMARY KEY (`room_id`);
+  ADD PRIMARY KEY (`room_id`),
+  ADD UNIQUE KEY `room_number` (`room_number`),
+  ADD KEY `room_type_id` (`room_type_id`);
 
 --
 -- Indexes for table `room_types`
 --
 ALTER TABLE `room_types`
-  ADD PRIMARY KEY (`room_type_id`);
+  ADD PRIMARY KEY (`room_type_id`),
+  ADD UNIQUE KEY `type_name` (`type_name`);
 
 --
 -- Indexes for table `users`
@@ -189,6 +189,13 @@ ALTER TABLE `payments`
 ALTER TABLE `reservations`
   ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
   ADD CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`);
+
+ALTER TABLE `rooms`
+  ADD CONSTRAINT `rooms_ibfk_1`
+  FOREIGN KEY (`room_type_id`)
+  REFERENCES `room_types` (`room_type_id`)
+  ON UPDATE CASCADE
+  ON DELETE RESTRICT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
