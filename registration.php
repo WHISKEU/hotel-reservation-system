@@ -101,6 +101,214 @@ if (isset($_POST['submit'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+    
+      <style>
+   
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:40px 20px;
+
+    background:linear-gradient(
+        135deg,
+        #cdb4db 0%,
+        #ffc8dd 30%,
+        #ffafcc 60%,
+        #bde0fe 85%,
+        #a2d2ff 100%
+    );
+}
+
+.container{
+    width:100%;
+    display:flex;
+    justify-content:center;
+}
+
+.form-card{
+    width:100%;
+    max-width:600px;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(15px);
+    border-radius:25px;
+    padding:40px;
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.15);
+    animation:fadeIn .7s ease;
+}
+
+.form-header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.form-header h1{
+    color:#7d5ba6;
+    font-size:34px;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+.form-header h2{
+    color:#666;
+    font-weight:400;
+    font-size:18px;
+}
+
+.form-group{
+    margin-bottom:20px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:8px;
+    color:#555;
+    font-weight:500;
+}
+
+.form-group input{
+
+    width:100%;
+    padding:14px 18px;
+    border:2px solid #bde0fe;
+    border-radius:15px;
+    background:#ffffff;
+    font-size:15px;
+    transition:.3s;
+}
+
+.form-group input::placeholder{
+    color:#999;
+}
+
+.form-group input:focus{
+
+    outline:none;
+    border-color:#ffafcc;
+    box-shadow:
+        0 0 0 5px rgba(255,175,204,.25);
+    transform:translateY(-2px);
+}
+
+.btn-primary{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:15px;
+    background:linear-gradient(
+        90deg,
+        #ffafcc,
+        #cdb4db
+    );
+
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.35s;
+}
+
+.btn-primary:hover{
+
+    transform:translateY(-3px);
+    box-shadow:
+        0 12px 25px rgba(205,180,219,.45);
+}
+
+.btn-primary:active{
+    transform:scale(.98);
+}
+
+
+
+.form-footer{
+    text-align:center;
+    margin-top:25px;
+    color:#666;
+}
+
+.form-footer a{
+    color:#7d5ba6;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.form-footer a:hover{
+    color:#ff69a8;
+    text-decoration:underline;
+}
+
+.error{
+
+    margin-bottom:20px;
+    padding:14px;
+    border-radius:12px;
+    background:#ffe5ec;
+    color:#b00020;
+    border-left:6px solid #ffafcc;
+}
+
+.success{
+    margin-bottom:20px;
+    padding:14px;
+    border-radius:12px;
+    background:#e8f7ff;
+    color:#00695c;
+    border-left:6px solid #a2d2ff;
+}
+
+input[type="date"]{
+    color:#666;
+}
+
+::-webkit-scrollbar{
+    width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#cdb4db;
+    border-radius:20px;
+}
+
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+@media(max-width:700px){
+    body{
+        padding:20px;
+    }
+    .form-card{
+        padding:28px;
+    }
+    .form-header h1{
+        font-size:28px;
+    }
+
+}
+  </style>
+    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
