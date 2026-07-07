@@ -80,6 +80,203 @@ if (isset($_POST['login'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+    <style>
+    
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#cdb4db,#ffc8dd,#bde0fe);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:40px 20px;
+}
+
+/* Container */
+
+.container{
+    width:100%;
+    display:flex;
+    justify-content:center;
+}
+
+/* Card */
+
+.form-card{
+    background:#ffffff;
+    width:100%;
+    max-width:520px;
+    padding:35px;
+    border-radius:20px;
+    box-shadow:0 15px 35px rgba(0,0,0,.12);
+    animation:fadeIn .5s ease;
+}
+
+/* Header */
+
+.form-header{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.form-header h1{
+    color:#8d6cab;
+    font-size:28px;
+    margin-bottom:5px;
+}
+
+.form-header h2{
+    color:#666;
+    font-size:18px;
+    font-weight:400;
+}
+
+/* Form */
+
+.form-group{
+    margin-bottom:18px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:7px;
+    color:#555;
+    font-weight:500;
+}
+
+.form-group input{
+    width:100%;
+    padding:13px 15px;
+    border:2px solid #bde0fe;
+    border-radius:12px;
+    outline:none;
+    font-size:15px;
+    transition:.3s;
+    background:#fafafa;
+}
+
+.form-group input:focus{
+    border-color:#a2d2ff;
+    background:#fff;
+    box-shadow:0 0 10px rgba(162,210,255,.4);
+}
+
+/* Placeholder */
+
+::placeholder{
+    color:#aaa;
+}
+
+/* Button */
+
+.btn-primary{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:#ffafcc;
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+    margin-top:8px;
+}
+
+.btn-primary:hover{
+    background:#cdb4db;
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(205,180,219,.5);
+}
+
+/* Footer */
+
+.form-footer{
+    text-align:center;
+    margin-top:22px;
+    color:#666;
+}
+
+.form-footer a{
+    color:#8d6cab;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.form-footer a:hover{
+    text-decoration:underline;
+}
+
+/* Error */
+
+.error{
+    background:#ffe5ec;
+    color:#d62828;
+    border-left:5px solid #ffafcc;
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+/* Success */
+
+.success{
+    background:#d8f3dc;
+    color:#2d6a4f;
+    border-left:5px solid #a2d2ff;
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+/* Date input */
+
+input[type="date"]{
+    color:#555;
+}
+
+/* Animation */
+
+@keyframes fadeIn{
+
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+/* Responsive */
+
+@media(max-width:600px){
+
+    .form-card{
+        padding:25px;
+    }
+
+    .form-header h1{
+        font-size:23px;
+    }
+
+    .form-header h2{
+        font-size:16px;
+    }
+
+}</style>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
