@@ -259,7 +259,7 @@ if (isset($_GET['delete'])) {
 
         <div class="form-group">
 
-            <label>Room Type</label>
+            <label>Room Type (e.g. Standard Room, Deluxe Room, Suite, Family Room)</label>
 
             <input type="text" name="type_name"
                 value="<?php echo htmlspecialchars($type_name); ?>"
