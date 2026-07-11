@@ -85,13 +85,13 @@ $query = mysqli_query($conn, "
 
                     <?php if ($row['reservation_status'] == "Pending") { ?>
 
-                        <a href="edit_reservation.php?id=<?php echo $row['reservation_id']; ?>">
+                        <a href="edit_reservations.php?id=<?php echo $row['reservation_id']; ?>">
                             Edit
                         </a>
 
                         |
 
-                        <a href="cancel_reservation.php?id=<?php echo $row['reservation_id']; ?>"
+                        <a href="cancel_reservations.php?id=<?php echo $row['reservation_id']; ?>"
                            onclick="return confirm('Cancel this reservation?')">
                             Cancel
                         </a>
@@ -114,7 +114,7 @@ $query = mysqli_query($conn, "
 
     <br>
 
-    <a href="customer_index.php">← Back to Dashboard</a>
+    <a href="index.php">← Back to Dashboard</a>
 
 </div>
 
