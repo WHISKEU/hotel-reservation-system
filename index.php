@@ -52,6 +52,7 @@ $rooms = mysqli_query(
         <?php echo htmlspecialchars($_SESSION['fname']); ?>!
     </h1>
 
+    <a href="index.php">Home</a><br>
     <a href="my_reservations.php">My Reservations</a>
 
     <h2>Available Rooms</h2>
