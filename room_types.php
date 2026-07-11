@@ -2,13 +2,17 @@
 
 include '../includes/admin_auth.php';
 include '../includes/connection.php';
+include '../includes/admin_sidebar.php';
 
 $error = "";
 $success = "";
 
+$edit = false;
+
 $type_name = "";
 $description = "";
 $price = "";
+$capacity = "";
 
 // Handle Add Room Type
 if (isset($_POST['add_room_type'])) {
@@ -16,6 +20,7 @@ if (isset($_POST['add_room_type'])) {
     $type_name = trim($_POST['type_name']);
     $description = trim($_POST['description']);
     $price = trim($_POST['price']);
+    $capacity = trim($_POST['capacity']);
 
     if (empty($type_name)) {
 
@@ -32,6 +37,14 @@ if (isset($_POST['add_room_type'])) {
     } elseif (!is_numeric($price) || $price <= 0) {
 
         $error = "Price must be greater than zero.";
+
+    } elseif (empty($capacity)) {
+
+    $error = "Capacity is required.";
+
+    } elseif (!is_numeric($capacity) || $capacity <= 0) {
+
+        $error = "Capacity must be greater than zero.";
 
     } else {
 
@@ -58,16 +71,17 @@ if (isset($_POST['add_room_type'])) {
             $stmt = mysqli_prepare(
                 $conn,
                 "INSERT INTO room_types
-                (type_name, description, price)
-                VALUES (?, ?, ?)"
+                (type_name, description, price, capacity)
+                VALUES (?, ?, ?, ?, )"
             );
 
             mysqli_stmt_bind_param(
                 $stmt,
-                "ssd",
+                "ssdi",
                 $type_name,
                 $description,
-                $price
+                $price,
+                $capacity
             );
 
             if (mysqli_stmt_execute($stmt)) {
@@ -119,6 +133,7 @@ if (isset($_GET['edit'])) {
         $type_name = $row['type_name'];
         $description = $row['description'];
         $price = $row['price'];
+        $capacity = $row['capacity'];
 
     } else {
 
@@ -138,6 +153,7 @@ if (isset($_POST['update_room_type'])) {
     $type_name = trim($_POST['type_name']);
     $description = trim($_POST['description']);
     $price = trim($_POST['price']);
+    $capacity = trim($_POST['capacity']);
 
     // Validation
     if (empty($type_name)) {
@@ -156,21 +172,31 @@ if (isset($_POST['update_room_type'])) {
 
         $error = "Price must be greater than zero.";
 
-    } else {
+    } elseif (empty($capacity)) {
+
+        $error = "Capacity is required.";
+
+    } elseif (!is_numeric($capacity) || $capacity <= 0) {
+
+        $error = "Capacity must be greater than zero.";
+
+    }
+    else {
 
         $stmt = mysqli_prepare(
             $conn,
             "UPDATE room_types
-             SET type_name = ?, description = ?, price = ?
+             SET type_name = ?, description = ?, price = ?, capacity = ?
              WHERE room_type_id = ?"
         );
 
         mysqli_stmt_bind_param(
             $stmt,
-            "ssdi",
+            "ssdii",
             $type_name,
             $description,
             $price,
+            $capacity,
             $room_type_id
         );
 
@@ -218,8 +244,7 @@ if (isset($_GET['delete'])) {
 
 }
 
-include '../includes/admin_header.php';
-include '../includes/admin_sidebar.php';
+
 ?>
 
 
@@ -227,211 +252,6 @@ include '../includes/admin_sidebar.php';
 <!-- HTML content for the room types page -->
 <!DOCTYPE html>
 <html lang="en">
-
-  <style>
-   
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
-}
-
-body{
-
-    background:linear-gradient(
-        135deg,
-        #cdb4db,
-        #ffc8dd,
-        #bde0fe,
-        #a2d2ff
-    );
-
-    min-height:100vh;
-    padding:40px;
-}
-
-
-
-.content{
-
-    max-width:1100px;
-    margin:auto;
-    background:#fff;
-    padding:35px;
-    border-radius:20px;
-    box-shadow:0 15px 35px rgba(0,0,0,.12);
-}
-
-h1{
-    text-align:center;
-    color:#7a5ca4;
-    margin-bottom:30px;
-    font-size:32px;
-}
-
-.error{
-    background:#ffe5ec;
-    color:#b00020;
-    border-left:6px solid #ffafcc;
-    padding:15px;
-    border-radius:10px;
-    margin-bottom:20px;
-}
-
-form{
-    margin-bottom:35px;
-}
-
-.form-group{
-    margin-bottom:20px;
-}
-
-.form-group label{
-    display:block;
-    margin-bottom:8px;
-    font-weight:600;
-    color:#555;
-}
-
-.form-group input,
-.form-group textarea{
-    width:100%;
-    padding:14px;
-    border:2px solid #bde0fe;
-    border-radius:12px;
-    font-size:15px;
-    transition:.3s;
-    resize:vertical;
-}
-
-.form-group textarea{
-    min-height:120px;
-}
-
-.form-group input:focus,
-.form-group textarea:focus{
-    outline:none;
-    border-color:#ffafcc;
-    box-shadow:0 0 0 5px rgba(255,175,204,.25);
-}
-
-button{
-    background:linear-gradient(
-        90deg,
-        #ffafcc,
-        #cdb4db
-    );
-
-    color:white;
-    border:none;
-    padding:12px 24px;
-    border-radius:12px;
-    cursor:pointer;
-    font-size:15px;
-    font-weight:600;
-    transition:.3s;
-}
-
-button:hover{
-    transform:translateY(-2px);
-    box-shadow:0 8px 20px rgba(205,180,219,.4);
-}
-
-.btn-cancel{
-    display:inline-block;
-    margin-left:10px;
-    padding:12px 24px;
-    background:#a2d2ff;
-    color:#333;
-    text-decoration:none;
-    border-radius:12px;
-    font-weight:600;
-    transition:.3s;
-}
-
-.btn-cancel:hover{
-    background:#bde0fe;
-}
-
-hr{
-    margin:35px 0;
-    border:none;
-    border-top:2px solid #e6e6e6;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    overflow:hidden;
-    border-radius:15px;
-    background:white;
-}
-
-table th{
-    background:#cdb4db;
-    color:white;
-    padding:15px;
-    text-align:left;
-}
-
-table td{
-    padding:15px;
-    border-bottom:1px solid #eee;
-}
-
-table tr:nth-child(even){
-    background:#fdf7fb;
-}
-
-table tr:hover{
-    background:#eef7ff;
-    transition:.3s;
-}
-
-table a{
-    text-decoration:none;
-    font-weight:600;
-    color:#7a5ca4;
-    transition:.3s;
-}
-
-table a:hover{
-    color:#ff69a8;
-}
-
-@media(max-width:768px){
-    body{
-        padding:20px;
-    }
-
-    .content{
-        padding:20px;
-        overflow-x:auto;
-    }
-
-    table{
-        min-width:700px;
-    }
-
-    h1{
-        font-size:26px;
-    }
-
-    button,
-    .btn-cancel{
-        width:100%;
-        margin-top:10px;
-        margin-left:0;
-    }
-
-}
-  </style>
-    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -463,7 +283,7 @@ table a:hover{
 
         <div class="form-group">
 
-            <label>Room Type (e.g. Standard Room, Deluxe Room, Suite, Family Room)</label>
+            <label>Room Type</label>
 
             <input type="text" name="type_name"
                 value="<?php echo htmlspecialchars($type_name); ?>"
@@ -485,6 +305,19 @@ table a:hover{
 
             <input type="number" name="price" step="0.01"min="1"
                 value="<?php echo htmlspecialchars($price); ?>"
+                required>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Capacity</label>
+
+            <input
+                type="number"
+                name="capacity"
+                min="1"
+                value="<?php echo htmlspecialchars($capacity); ?>"
                 required>
 
         </div>
@@ -519,6 +352,7 @@ table a:hover{
             <th>Room Type</th>
             <th>Description</th>
             <th>Price</th>
+            <th>Capacity</th>
             <th>Action</th>
 
         </tr>
@@ -531,6 +365,7 @@ table a:hover{
             <td><?php echo htmlspecialchars($row['type_name']); ?></td>
             <td><?php echo htmlspecialchars($row['description']); ?></td>
             <td>₱<?php echo number_format($row['price'],2); ?></td>
+            <td><?php echo $row['capacity']; ?></td>
             <td>
 
                 <a href="room_types.php?edit=<?php echo $row['room_type_id']; ?>">
@@ -559,9 +394,3 @@ table a:hover{
 
 </body>
 </html>
-
-<?php
-
-include '../includes/admin_footer.php';
-
-?>
