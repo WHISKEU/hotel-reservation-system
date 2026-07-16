@@ -177,66 +177,25 @@ body{
     <div class="dashboard-cards">
 
         <div class="card">
-
             <div class="icon">🏨</div>
-
             <h2>Rooms</h2>
-
             <p>Manage hotel rooms and availability.</p>
-
+            <a href ="rooms.php" style="display:block; margin-top:10px; color:#7d5ba6; text-decoration:none;">View Rooms</a>
         </div>
 
         <div class="card">
-
             <div class="icon">🛏️</div>
-
             <h2>Room Types</h2>
-
             <p>Create and update room categories.</p>
-
+            <a href="room_types.php" style="display:block; margin-top:10px; color:#7d5ba6; text-decoration:none;">View Room Types</a>
         </div>
 
         <div class="card">
-
             <div class="icon">📅</div>
-
             <h2>Reservations</h2>
-
-            <p>Manage all guest reservations.</p>
-
+            <p>Manage all guest reservations and payments.</p>
+            <a href="reservations.php" style="display:block; margin-top:10px; color:#7d5ba6; text-decoration:none;">View Reservations</a>
         </div>
-
-        <div class="card">
-
-            <div class="icon">👥</div>
-
-            <h2>Guests</h2>
-
-            <p>View registered customers.</p>
-
-        </div>
-
-        <div class="card">
-
-            <div class="icon">💳</div>
-
-            <h2>Payments</h2>
-
-            <p>Track reservation payments.</p>
-
-        </div>
-
-        <div class="card">
-
-            <div class="icon">📊</div>
-
-            <h2>Reports</h2>
-
-            <p>Generate reservation reports.</p>
-
-        </div>
-
-    </div>
 
     <div class="welcome-box">
 
@@ -247,20 +206,12 @@ body{
             Welcome to the Hotel Reservation System Admin Dashboard.
 
             Use the navigation menu on the left to manage hotel rooms,
-            reservations, guests, payments, room types, and reports.
+            reservations, payments, room types, and reports.
 
         </p>
 
     </div>
 
 </div>
-
 </body>
-
 </html>
-
-<?php
-
-include '../includes/admin_footer.php';
-
-?>
